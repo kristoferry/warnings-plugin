@@ -33,6 +33,7 @@ import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.warnings.GroovyParser;
 import hudson.plugins.warnings.WarningsDescriptor;
 import hudson.util.ListBoxModel;
+import jenkins.model.Jenkins;
 
 /**
  * Registry of parsers that are available for the warnings plug-in.
@@ -52,7 +53,7 @@ public class ParserRegistry {
      */
     @SuppressWarnings("javadoc")
     private static List<AbstractWarningsParser> all() {
-        Hudson instance = Hudson.getInstance();
+        Jenkins instance = Jenkins.getInstance();
         if (instance == null) {
             return Lists.newArrayList();
         }
@@ -63,7 +64,7 @@ public class ParserRegistry {
     }
 
     @SuppressWarnings("deprecation")
-    private static void addParsersWithDeprecatedApi(final Hudson instance, final List<AbstractWarningsParser> parsers) {
+    private static void addParsersWithDeprecatedApi(final Jenkins instance, final List<AbstractWarningsParser> parsers) {
         for (WarningsParser parser : instance.getExtensionList(WarningsParser.class)) {
             if (!(parser instanceof AbstractWarningsParser)) {
                 parsers.add(new ParserAdapter(parser));
